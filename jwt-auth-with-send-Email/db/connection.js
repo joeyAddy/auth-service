@@ -1,15 +1,20 @@
-let mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-// cloud connection-Str
-let cloudDB = process.env.DATABASE.replace(
-  '<password>',
-  process.env.DATABASE_PASSWORD
-);
-
-mongoose.connect(process.env.DATABASE_LOCAL, {
-//mongoose.connect(cloudDB, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false
-}).then(() => console.log('DB connect success!!!'));
+module.exports = () => {
+  const connectionParams = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  };
+  // cloud connection-Str
+  let cloudDB = process.env.DATABASE.replace(
+    "<password>",
+    process.env.DATABASE_PASSWORD
+  );
+  try {
+    mongoose.connect(cloudDB, connectionParams);
+    console.log("Connected to database successfully");
+  } catch (error) {
+    console.log(error);
+    console.log("Could not connect database!");
+  }
+};
